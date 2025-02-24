@@ -42,13 +42,39 @@ def compute_loss(y_hat, y_predicted):
     return np.mean((y_hat - y_predicted) ** 2) #MSE formula
 
 loss = compute_loss(y_hat,prediction)
-print("Intial loss", loss)
+print("Intial loss", loss) #identifies how far away the value is from the original dot
 
 
-#now it is time to add the optimizer 
-
+#add the optimizer 
 def compute_gradients(y_hat, y_predicted):
     n = len(y_hat)
-    gradient_of_weights = (-2/n) * np.dot(X.T, (y_hat - y_predicted))
-    gradient_of_bias = (-2/n) * np.sum(y_hat - y_predicted)
+    gradient_of_weights = (-2/n) * np.dot(X.T, (y_hat - y_predicted)) #tells how much of weight contribute to the error
+    gradient_of_bias = (-2/n) * np.sum(y_hat - y_predicted) #tells how much of bias contribute to the error
+    return gradient_of_weights, gradient_of_bias #return the contribution of erros
+
+def update_weights(weights, bias, gW, gB, learning_rate):
+    weights -= learning_rate * gW 
+    bias -= learning_rate * gB
+    return weights, bias
+
+learning_rate = 0.0001
+epochs = 100
+
+#leanring rate 0.001 2 epoch 32.
+
+for epoch in range(epochs):
+    predictions = predict(X,weights,bias)
+    loss = compute_loss(y_hat, predictions)
+    dW, dB = compute_gradients(y_hat, prediction)
+    weights, bias = update_weights(weights, bias, dW, dB, learning_rate)
+
+    print(f"Epoch {epoch}, loss {loss}")
+
+    
+    
+
+
+
+
+     
 
